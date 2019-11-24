@@ -5,6 +5,8 @@ This unit explores three different types of statistical inference and examines t
 
 1. **Frequentist inference** regards probability as the expected frequency of a particular outcome when an experiment is run multiple times. You’ll generally use this type of inference when your data satisfies certain conditions and there is a theoretical result known for your statistic.
 
+
+
 2. **Bootstrap inference** simulates such reruns of an experiment to observe the outcomes. This type of inference is particularly useful when theoretical results for your statistic don’t apply (or are difficult to calculate) such as when you want to calculate a confidence interval for a minimum or maximum value for a dataset.   
 
 3. **Bayesian inference** treats probability as a reflection of your belief in a specific outcome. This type of inference can be particularly useful when you have limited data but do have prior estimates from domain expertise, or when you want to construct and validate probabilistic models. Bayesian inference can more naturally deal with smaller amounts of data.

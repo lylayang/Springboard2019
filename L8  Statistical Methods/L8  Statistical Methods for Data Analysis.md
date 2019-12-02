@@ -132,8 +132,156 @@ _ = plt.plot(ptiles_vers, percentiles/100, marker='D', color='red',
 ```
 
 5. Covariance and the Pearson correlation coefficient
-- scatter plot and covariance
+- scatter plot and covariance(a measure of how two quantities vary together
 ![](https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/data%20sets/covariance%20.png)
+The covariance is the mean of the product of these differences. If x and y both tend ot be above or below their responsive means together, as they are in this dataset then the covariance is positive. This is means they are positively correlated. This means when county is more populus then more votes for Obama. Conversely, if x is high while y is low, the covariance is negative, and the data are negatively correlated, or anticorrelated which is not the case for this data set.
+
+Easy to use - to be dimensionless, that is to not have any units.
+- Person Correlation coefficient (from -1 to 1)
+p=person correlation = covariance /(std of x)(std of y) = variability due to codependence/independant variability 
+
+codependence, the covariance
+independent variability, the standard deviations
+
+```python
+# Compute the covariance matrix: covariance_matrix
+covariance_matrix = np.cov(versicolor_petal_length, versicolor_petal_width)
+corr_mat=np.corrcoef(versicolor_petal_length, versicolor_petal_width)
+correlation_coefficient=corr_mat[0,1]
+```
+6. Statistic inference - probabilistic thinking
+Given a set of data, you describe probabilistically what you might expect if those data were acquired again and again and again. It's the process by which we go from measured data to probabilistic conclusions about what we might expect if we collected the same data again.
+
+- simulation, resampling
+The np.random module, suite of functions based on random number generation.
+np.random.seed(), the same seed gives you same sequence of random numbers, hence the name, 'psudedorandom number generation'
+Steps:
+- Determine how to simulate data
+- Simulate many many times
+- Probability is approximately fracion of trials with the outcome of interest
+
+Simulating 4 coin flips
+```python
+import numpy as np
+np.random.seed(42)
+random_numbers=np.random.random(size=4)
+print(random_numbers)
+
+heads=random_numbers <0.5
+print(heads)
+
+print(np.sum(heads))
+
+#method 2: using for loop
+"""
+Calculate the probability of getting four heads if we were to repeat four flips over and over again
+"""
+n_all_heads=0 # initialize number of 4-heads trials
+for _ in range(10000):
+        heads=np.random.random(size=4) <0.5
+        n_heads=np.sum(heads)
+        if n_heads==4:
+           n_all_heads +=1
+print("probability of getting all four heads ", n_all_heads/10000)
+```
+
+```python
+#simulation1
+# Seed the random number generator
+np.random.seed(42)
+# Initialize random numbers: random_numbers
+random_numbers = np.empty(100000)
+# Generate random numbers by looping over range(100000)
+for i in range(100000):
+    random_numbers[i] = np.random.random()
+
+# Plot a histogram
+_ = plt.hist(random_numbers)
+
+# Show the plot
+plt.show()
+
+#simulation 2
+def perform_bernoulli_trials(n, p):
+    """Perform n Bernoulli trials with success probability p
+    and return number of successes."""
+    # Initialize number of successes: n_success
+    n_success = 0
+    # Perform trials
+    for i in range(n):
+        # Choose random number between zero and one: random_number
+        random_number=np.random.random()
+        # If less than p, it's a success so add one to n_success
+        if random_number < p:
+            n_success +=1
+
+    return n_success
+
+#simulation3 (put simulatoin1, 2 together)
+# Seed random number generator
+np.random.seed(42)
+
+# Initialize the number of defaults: n_defaults
+n_defaults=np.empty(1000)
+
+# Compute the number of defaults
+for i in range(1000):
+    n_defaults[i] = perform_bernoulli_trials(100,0.05) # per 100 loads, defaul rate is 0.05
+    
+_ = plt.hist(n_defaults, normed=True)
+_ = plt.xlabel('number of defaults out of 100 loans')
+_ = plt.ylabel('probability')
+
+# Show the plot
+plt.show()
+```
+**Exercise: Will the bank fail?** 
+Plot the number of defaults you got from the previous exercise, in your namespace as n_defaults, as a CDF. The ecdf() function you wrote in the first chapter is available.
+
+If interest rates are such that the bank will lose money if 10 or more of its loans are defaulted upon, what is the probability that the bank will lose money?
+
+
+```python
+# Compute ECDF: x, y
+x, y = ecdf(n_defaults)
+
+# Plot the CDF with labeled axes
+_ = plt.plot(x, y, marker='.', linestyle='none')
+_ = plt.xlabel('number of defaults out of 100')
+_ = plt.ylabel('CDF')
+plt.show()
+
+# Compute the number of 100-loan simulations with 10 or more defaults: n_lose_money
+n_lose_money=np.sum(n_defaults >=10)
+# Compute and print probability of losing money
+print('Probability of losing money =', n_lose_money / len(n_defaults))
+```
+
+7. PMF (Probability mass function) and CDF
+
+sampling from the Binomial distribution
+```python
+#flip coins times and get 4 heads
+np.random.binomial(4, 0.5, size=10)
+
+# the binomial PMF
+# we do 60 Bernoulli trials with a probability of success of 0.1
+samples=np.random.binomial(60, 0.1, size=10000)
+n=60
+p=0.1
+
+#the binomial CDF
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+x, y= ecdf(samples)
+_= plt.plot(x, y, marker='.', linestyle='none')
+plt.margins(0.02)
+_=plt.xlabel("number of successes")
+_=plt.ylabel('CDF')
+plt.show()
+```
+
 
 
 

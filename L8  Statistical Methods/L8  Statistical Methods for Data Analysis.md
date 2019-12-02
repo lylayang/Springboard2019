@@ -33,8 +33,11 @@ Unit Plan (What you’ll learn, Words to know, What will help)
  sns.swarmplot(x=, y=, data=)
  
  2. Bee sawrm plot problem
-  The edges have overlapping data points, which was necessary in order to fit all points on to the plot
-  The remedy for this - **Making an ECDF**, the empirical cumulative distribution functions
+  The edges have overlapping data points, which was necessary in order to fit all points on to the plot.
+  
+  The remedy for this - **Making an ECDF**, the empirical cumulative distribution functions.
+  
+  When the number of data are very large and bee swarm plots are too cluttered, boxplot is a greate alternative.
   
   3.ECDF
   Always plot ecdf first. It shows all the data and it gives a complete picture of how the data are distributed.
@@ -100,7 +103,7 @@ _ = plt.ylabel('ECDF')
 plt.show()
   ```
 
-  4. Percentiles, outliers, and box plots
+4. Percentiles, outliers, and box plots
   median, the middle value of a data set is immune to extrame data points
   
   
@@ -108,3 +111,29 @@ plt.show()
   
 ![alt text](https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/boxplot.png)
   
+While there is no single definition for an outliers, being more than 2IQRs away from the median is a common criterion.
+
+```python
+# Specify array of percentiles: percentiles
+percentiles=np.array([2.5, 25, 50, 75, 97.5])
+
+# Compute percentiles: ptiles_vers
+ptiles_vers=np.percentile(versicolor_petal_length, q=percentiles)
+
+# Plot the ECDF
+_ = plt.plot(x_vers, y_vers, '.')
+_ = plt.xlabel('petal length (cm)')
+_ = plt.ylabel('ECDF')
+
+# Overlay percentiles as red diamonds.
+_ = plt.plot(ptiles_vers, percentiles/100, marker='D', color='red',
+         linestyle='none')
+
+```
+
+5. Covariance and the Pearson correlation coefficient
+- scatter plot and covariance
+![](https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/data%20sets/covariance%20.png)
+
+
+

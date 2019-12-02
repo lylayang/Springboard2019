@@ -24,3 +24,86 @@ Unit Plan (What you’ll learn, Words to know, What will help)
 4. Applying Stastical Inference Skills to Your Capstone Project
 5. Report on the inferential statistics methods used on the capstone project and its results
  
+ 
+ ## DataCamp Statistical Thinking in Python Part 1
+ 
+ 1. Binning bias
+ The same data may be interpreted differently depending on choice of bins
+ The remedy for this problem - **Bee swarm plot**
+ sns.swarmplot(x=, y=, data=)
+ 
+ 2. Bee sawrm plot problem
+  The edges have overlapping data points, which was necessary in order to fit all points on to the plot
+  The remedy for this - **Making an ECDF**, the empirical cumulative distribution functions
+  
+  3.ECDF
+  Always plot ecdf first. It shows all the data and it gives a complete picture of how the data are distributed.
+  ![]['https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/data%20sets/ecdf.png']
+  
+  ```python
+import numpy as np
+  
+#method 1
+x=np.sort(df_swing['dem_share'])
+y=np.arange(1, len(x)+1)/len(x)
+_=plt.plot(x, y, marker='.', linestyle='none')
+_=plt.xlabel('percent of vote for Obama')
+_=plt.ylabel('ECDF')
+plt.margins(0.02)#keeps data off plot edges
+plt.show()
+  
+#method2
+def ecdf(data):
+    """Compute ECDF for a one-dimensional array of measurements."""
+    # Number of data points: n
+    n = len(data)
+
+    # x-data for the ECDF: x
+    x = np.sort(data)
+
+    # y-data for the ECDF: y
+    y = np.arange(1, n+1) / n
+
+    return x, y
+    
+# Compute ECDF for versicolor data: x_vers, y_vers
+x_vers, y_vers = ecdf(versicolor_petal_length)
+
+# Generate plot
+plt.plot(x_vers, y_vers, marker='.', linestyle='none')
+
+# Label the axes
+plt.ylabel('ECDF')
+
+
+# Display the plot
+
+plt.show()
+
+#method3, plot all ECDFs together on the same plot
+# Compute ECDFs
+x_set, y_set = ecdf(setosa_petal_length)
+x_vers, y_vers = ecdf(versicolor_petal_length)
+x_virg, y_virg = ecdf(virginica_petal_length)
+
+# Plot all ECDFs on the same plot
+_ = plt.plot(x_set, y_set, marker='.', linestyle='none')
+_ = plt.plot(x_vers, y_vers, marker='.', linestyle='none')
+_ = plt.plot(x_virg, y_virg, marker='.', linestyle='none')
+
+# Annotate the plot
+_ = plt.legend(('setosa', 'versicolor', 'virginica'), loc='lower right')
+_ = plt.xlabel('petal length (cm)')
+_ = plt.ylabel('ECDF')
+
+# Display the plot
+plt.show()
+  ```
+
+  4. Percentiles, outliers, and box plots
+  median, the middle value of a data set is immune to extrame data points
+  
+![]("https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/percentiles%20of%20edf.png")
+  
+![]("https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/boxplot.png")
+  

@@ -38,7 +38,7 @@ Unit Plan (What you’ll learn, Words to know, What will help)
   
   3.ECDF
   Always plot ecdf first. It shows all the data and it gives a complete picture of how the data are distributed.
-  ![]('https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/data%20sets/ecdf.png')
+  ![alt text](https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/data%20sets/ecdf.png)
   
   ```python
 import numpy as np
@@ -104,7 +104,7 @@ plt.show()
   median, the middle value of a data set is immune to extrame data points
   
   
-![]("https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/percentiles%20of%20edf.png")
+![alt text](https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/percentiles%20of%20edf.png)
   
-![]("https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/boxplot.png")
+![alt text](https://raw.githubusercontent.com/lylayang/Springboard2019/master/L8%20%20Statistical%20Methods/boxplot.png)
   

@@ -298,3 +298,79 @@ _ = plt.ylabel('PMF')
 plt.show()
 ```
 
+## Possion process and the Possion distribution
+Possion process: the timing of the next event is completely independent of when the previous event happened
+Example of Possion process:
+- Natural births in a given hospital
+- Hit on a website during a given hour
+- Aviation incidents
+- Buses in Poissonville
+
+### Possion distribution
+- The number r of arrivals of a Poisson process in a given time interval with average rate of? arrivals per interval is Poisson distributed
+- The number r of hits on a website in one hour with an average hit rate of 6 hits per hour is Poisson distributed
+- Limit of the Binomial Distribution for low probability of success and large number of trials. That is, for rare events.
+- the Poisson distribution is a limit of the Binomial distribution for rare events. 
+
+The possion CDF
+```python
+samples= np.random.possion(6, size=10000) # 'size' for multiple samples
+x, y= ecdf(x, y, marker='.', linestyle='none')
+plt.margins(0.02)
+_=plt.xlabel('number of successes')
+_=plt.ylabel('CDF')
+plt.show()
+
+# Draw 10,000 samples out of Poisson distribution: samples_poisson
+samples_poisson = np.random.poisson(10, size=10000)
+
+# Print the mean and standard deviation
+print('Poisson:     ', np.mean(samples_poisson),
+                       np.std(samples_poisson))
+
+# Specify values of n and p to consider for Binomial: n, p
+n = [20, 100, 1000]
+p = [0.5, 0.1, 0.01]
+
+# Draw 10,000 samples for each n,p pair: samples_binomial
+for i in range(3):
+    samples_binomial = np.random.binomial(n[i], p[i], size=10000)
+
+    # Print results
+    print('n =', n[i], 'Binom:', np.mean(samples_binomial),
+                                 np.std(samples_binomial))
+                                 
+# Draw 10,000 samples out of Poisson distribution: n_nohitters
+n_nohitters = np.random.poisson(251/115, size=10000)
+
+# Compute number of samples that are seven or greater: n_large
+n_large = np.sum(n_nohitters >= 7)
+
+# Compute probability of getting seven or more: p_large
+p_large = n_large / 10000
+
+# Print the result
+print('Probability of seven or more no-hitters:', p_large)
+
+```
+
+## Quantities (Continuous VS discrete): Continuous
+PDF
+- PDF(probability density function) ~ continuous analog to the PMF
+- Mathematical description of the ralative likelihood of observing a value of a continuous variable
+
+```python
+# Generate CDFs
+x_std1, y_std1 = ecdf(samples_std1)
+x_std3, y_std3 = ecdf(samples_std3)
+x_std10, y_std10 = ecdf(samples_std10)
+
+# Plot CDFs
+_ = plt.plot(x_std1, y_std1, marker='.', linestyle='none')
+_ = plt.plot(x_std3, y_std3, marker='.', linestyle='none')
+_ = plt.plot(x_std10, y_std10, marker='.', linestyle='none')
+
+# Make a legend and show the plot
+_ = plt.legend(('std = 1', 'std = 3', 'std = 10'), loc='lower right')
+plt.show()
+```

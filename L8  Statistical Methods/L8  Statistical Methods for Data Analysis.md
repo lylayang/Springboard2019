@@ -291,7 +291,7 @@ You have already sampled out of the Binomial distribution during your exercises 
 # Compute bin edges: bins
 bins = np.arange(0, max(n_defaults) + 1.5) - 0.5
 # Generate histogram
-_ = plt.hist(n_defaults, normed=True, bins=bins)
+_ = plt.hist(n_defaults, normed=True, bins=bins, histtype='step')
 # Label axes
 _ = plt.xlabel('number of defaults out of 100 loans')
 _ = plt.ylabel('PMF')
@@ -311,6 +311,7 @@ Example of Possion process:
 - The number r of hits on a website in one hour with an average hit rate of 6 hits per hour is Poisson distributed
 - Limit of the Binomial Distribution for low probability of success and large number of trials. That is, for rare events.
 - the Poisson distribution is a limit of the Binomial distribution for rare events. 
+- **Timing of one is independent of all others**
 
 The possion CDF
 ```python
@@ -374,3 +375,90 @@ _ = plt.plot(x_std10, y_std10, marker='.', linestyle='none')
 _ = plt.legend(('std = 1', 'std = 3', 'std = 10'), loc='lower right')
 plt.show()
 ```
+## The Normal distribution: Properties and warnings
+- Plot histgrah
+- Plot CDF
+Check the overlay the theoretical Normal CDF on the ECDF of the data, see if its close or not.
+**Light tails of the Normal distribution**, the probability of being more than four standard deviations from the mean is very small. This means that when you are modeling data as Normally distributed, outliers are extremely unlikely. But real data sets usually have extreme values.
+
+#compare cdf of collected data set with normal distribution
+
+```python
+# Compute mean and standard deviation: mu, sigma
+mu=belmont_no_outliers.mean()
+sigma=belmont_no_outliers.std()
+
+# Sample out of a normal distribution with this mu and sigma: samples
+samples=np.random.normal(mu, sigma, size=10000)
+
+# Get the CDF of the samples and of the data
+x,y=ecdf(belmont_no_outliers)
+x_theor, y_theor= ecdf(samples)
+
+# Plot the CDFs and show the plot
+_ = plt.plot(x_theor, y_theor)
+_ = plt.plot(x, y, marker='.', linestyle='none')
+_ = plt.xlabel('Belmont winning time (sec.)')
+_ = plt.ylabel('CDF')
+plt.show()
+```
+What are the chances of a horse matching or beating Secretariat's record?
+
+Assume that the Belmont winners' times are Normally distributed (with the 1970 and 1973 years removed), what is the probability that the winner of a given Belmont Stakes will run it as fast or faster than Secretariat?
+
+```python
+# Take a million samples out of the Normal distribution: samples
+samples = np.random.normal(mu, sigma, size=1000000)
+
+# Compute the fraction that are faster than 144 seconds: prob
+prob = np.sum(samples <= 144) / len(samples)
+
+# Print the result
+print('Probability of besting Secretariat:', prob)
+```
+## The Exponential distribution
+We know that the number of buses that will arrive per hour are Possion Distributed
+But the amount oftime between arrivals of buese is Exponentially distributed
+- A single prameter: the mean waiting time
+- The waiting time between arrivales of a Poisson process is Exponentially distributed 
+
+Simulation: exponential inter-incident times
+```python
+mean = np.mean(inter_times)
+samples = np.random.exponential(mean, size=10000)
+x, y = ecdf(inter_times)
+x_theor, y_theor = ecdf(samples)
+_ = plt.plot(x_theor, y_theor)
+_ = plt.plot(x, y, marker='.', linestyle='none')
+_ = plt.xlabel('time (days)')
+_ = plt.ylabel('CDF')
+plt.show()
+```
+Q: Waiting for the next Secretariat
+Unfortunately, Justin was not alive when Secretariat ran the Belmont in 1973. Do you think he will get to see a performance like that? To answer this, you are interested in how many years you would expect to wait until you see another performance like Secretariat's. How is the waiting time until the next performance as good or better than Secretariat's distributed? Choose the best answer.
+
+Exponential: A horse as fast as Secretariat is a rare event, which can be modeled as a Poisson process, and the waiting time between arrivals of a Poisson process is Exponentially distributed.
+
+```python
+def successive_poisson(tau1, tau2, size=1):
+    """Compute time for arrival of 2 successive Poisson processes."""
+    # Draw samples out of first exponential distribution: t1
+    t1 = np.random.exponential(tau1, size=size)
+
+    # Draw samples out of second exponential distribution: t2
+    t2 = np.random.exponential(tau2, size=size)
+
+    return t1 + t2
+ 
+# Draw samples of waiting times: waiting_times
+waiting_times= successive_poisson(764, 715, size=100000)
+# Make the histogram
+_=plt.hist(waiting_times, normed=True, bins=100, histtype='step')
+
+# Label axes
+_=plt.xlabel('waiting times')
+_=plt.ylabel('PDF')
+
+# Show the plot
+plt.show()
+ ```

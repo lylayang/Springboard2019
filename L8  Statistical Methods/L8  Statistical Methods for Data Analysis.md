@@ -495,3 +495,126 @@ _ = plt.plot(x_double, y_double)
 # Show the plot
 plt.show()
 ```
+Linear regression by least squres
+The process of finding the parameters for which the sum of the squares of the residuals is minimal
+Least squares with np.polyfit(), which performs least squares analysis with polynomial functions
+Slope, intercept = np.polyfit(total_votes, dem_share, 1)
+print(slope, intercept)
+
+The function np.polyfit() that you used to get your regression parameters finds the optimal slope and intercept. It is optimizing the sum of the squares of the residuals, also known as RSS (for residual sum of squares).
+
+```python
+# Plot the illiteracy rate versus fertility
+_ = plt.plot(illiteracy, fertility, marker='.', linestyle='none')
+plt.margins(0.02)
+_ = plt.xlabel('percent illiterate')
+_ = plt.ylabel('fertility')
+
+# Perform a linear regression using np.polyfit(): a, b
+a, b = np.polyfit(illiteracy, fertility, 1)
+
+# Print the results to the screen
+print('slope =', a, 'children per woman / percent illiterate')
+print('intercept =', b, 'children per woman')
+
+# Make theoretical line to plot
+x = np.array([0, 100])
+y = a * x + b
+
+# Add regression line to your plot
+_ = plt.plot(x, y)
+
+# Draw the plot
+plt.show()
+```
+
+n this exercise, you will plot the function that is being optimized, the RSS, versus the slope parameter a. To do this, fix the intercept to be what you found in the optimization. Then, plot the RSS vs. the slope. Where is it minimal?
+
+```python
+# Specify slopes to consider: a_vals
+a_vals = np.linspace(0, 0.1, 200)
+
+# Initialize sum of square of residuals: rss
+rss = np.empty_like(a_vals)
+
+# Compute sum of square of residuals for each value of a_vals
+for i, a in enumerate(a_vals):
+    rss[i] = np.sum((fertility - a*illiteracy - b)**2)
+
+# Plot the RSS
+# 'RSS versus slope', RSS is the y-axis, and slope is the x-axis. 
+plt.plot(a_vals, rss, '-')
+plt.xlabel('slope (children per woman / percent illiterate)')
+plt.ylabel('sum of square of residuals')
+
+plt.show()
+```
+
+The importance of EDA: Anscombe's quartet
+Same rss, same linear line but
+￼
+```python
+# Perform linear regression: a, b
+a, b = np.polyfit(x, y, 1)
+
+# Print the slope and intercept
+print(a, b)
+
+# Generate theoretical x and y data: x_theor, y_theor
+x_theor = np.array([3, 15])
+y_theor = a * x_theor + b
+
+# Plot the Anscombe data and theoretical line
+_ = plt.plot(x, y, marker='.', linestyle='none')
+_ = plt.plot(x_theor, y_theor, '-')
+
+# Label the axes
+plt.xlabel('x')
+plt.ylabel('y')
+
+# Show the plot
+plt.show()
+```
+
+The data are stored in lists; anscombe_x = [x1, x2, x3, x4] and anscombe_y = [y1, y2, y3, y4], where, for example, x2 and y2 are the 
+x
+x
+ and 
+y
+y
+ values for the second Anscombe data set.
+ 
+```python
+# Iterate through x,y pairs
+for x, y in zip(anscombe_x, anscombe_y):
+    # Compute the slope and intercept: a, b
+    a, b = np.polyfit(x, y,1)
+
+    # Print the result
+    print('slope:', a, 'intercept:', b)
+
+
+Bootstrapping:
+The use of resampled data to perform statistical inference
+
+for _ in range(50):
+    # Generate bootstrap sample: bs_sample
+    bs_sample = np.random.choice(rainfall, size=len(rainfall))
+
+    # Compute and plot ECDF from bootstrap sample
+    x, y = ecdf(bs_sample)
+    _ = plt.plot(x, y, marker='.', linestyle='none',
+                 color='gray', alpha=0.1)
+
+# Compute and plot ECDF from original data
+x, y = ecdf(rainfall)
+_ = plt.plot(x, y, marker='.')
+
+# Make margins and label axes
+plt.margins(0.02)
+_ = plt.xlabel('yearly rainfall (mm)')
+_ = plt.ylabel('ECDF')
+
+# Show the plot
+plt.show()
+```
